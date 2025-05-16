@@ -195,7 +195,7 @@ GameObject:
   - component: {fileID: 138739114}
   m_Layer: 0
   m_Name: Cube (7)
-  m_TagString: Untagged
+  m_TagString: Breakable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -311,7 +311,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 19.981, y: 1.005, z: -19.959}
-  m_LocalScale: {x: -0.33672315, y: 2.0175, z: 0.9334523}
+  m_LocalScale: {x: 0.3367231, y: 2.0175, z: 0.9334523}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -628,7 +628,7 @@ GameObject:
   - component: {fileID: 316767665}
   m_Layer: 0
   m_Name: Cube (5)
-  m_TagString: Untagged
+  m_TagString: Breakable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -744,7 +744,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 19.981, y: 1.005, z: -22}
-  m_LocalScale: {x: -0.33672315, y: 2.0175, z: 0.9334523}
+  m_LocalScale: {x: 0.3367231, y: 2.0175, z: 0.9334523}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -984,7 +984,7 @@ GameObject:
   - component: {fileID: 534543894}
   m_Layer: 0
   m_Name: Cube (6)
-  m_TagString: Untagged
+  m_TagString: Breakable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1100,7 +1100,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 19.981, y: 1.005, z: -21}
-  m_LocalScale: {x: -0.33672315, y: 2.0175, z: 0.9334523}
+  m_LocalScale: {x: 0.3367231, y: 2.0175, z: 0.9334523}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -4286,6 +4286,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 6462320142422576247, guid: 77e7c27b2c5525e4aa8cc9f99d654486, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6462320142422576247, guid: 77e7c27b2c5525e4aa8cc9f99d654486, type: 3}
       propertyPath: m_LeftHandMesh
       value: 
       objectReference: {fileID: 0}
@@ -4520,7 +4524,7 @@ GameObject:
   - component: {fileID: 2089087821}
   m_Layer: 0
   m_Name: Cube (4)
-  m_TagString: Untagged
+  m_TagString: Breakable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4636,7 +4640,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 19.981, y: 1.005, z: -22.998}
-  m_LocalScale: {x: -0.33672315, y: 2.0175, z: 0.9334523}
+  m_LocalScale: {x: 0.3367231, y: 2.0175, z: 0.9334523}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
