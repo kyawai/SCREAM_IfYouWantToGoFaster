@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class MeleeWeapon : WeaponBase
+public class MeleeWeaponController : ApplyWeaponComponents
 {
     private void OnCollisionEnter(Collision collision)
     {
