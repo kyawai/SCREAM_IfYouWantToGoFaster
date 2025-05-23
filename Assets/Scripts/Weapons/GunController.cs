@@ -25,7 +25,10 @@ public class GunController : ApplyWeaponComponents, IShootable
     private void Start()
     {
         _thisGun = this.gameObject.transform;
-        _bulletFactory = new BulletPool(bulletPrefab, 50);
+
+        BulletPoolManager.Instance.InitialisePool(bulletPrefab, 50);
+        _bulletFactory = BulletPoolManager.Instance.GetBulletPool();
+
         _audioSoure = GetComponent<AudioSource>();
         gun.ammo = 20; //DELETE AFTER 
 

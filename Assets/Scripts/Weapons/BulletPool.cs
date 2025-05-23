@@ -20,7 +20,7 @@ public class BulletPool : IBulletFactory
         this._maxPoolSize = maxPoolSize;
 
         GameObject container = new GameObject($"BulletPool_{bulletPrefab.name}");
-        Object.DontDestroyOnLoad( container );
+        //Object.DontDestroyOnLoad( container );
         _poolContainer = container.transform;
 
         InitialisePool();

@@ -7,36 +7,37 @@ public class BulletPoolManager : MonoBehaviour
     /// Create this manager as a singleton to control all bullets in the level for memory management
     /// </summary>
     private static BulletPoolManager _instance;
+
+
     public static BulletPoolManager Instance
     {
         get
         {
-            if (_instance == null)
+            if (_instance == null && Application.isPlaying)
             {
                 GameObject managerObject = new GameObject("Bullet Pool Manager");
                 _instance = managerObject.AddComponent<BulletPoolManager>();
-                DontDestroyOnLoad(managerObject);
+                 DontDestroyOnLoad(managerObject);
             }
             return _instance;
         }
     }
 
-    ////********MIGHT NOT NEED*******
-    ////Dictionary to store bullet pools by prefab ID
-    //private Dictionary<int, BulletPool> bulletPools = new Dictionary<int, BulletPool>();
+    private BulletPool _globalBulletPool;
 
-    ////********MIGHT NOT NEED*******
-    ////Get or create a pool for a specific bullet prefab
-    //public BulletPool GetBulletPool(GameObject bulletPrefab, int maxPoolSize)
-    //{
-    //    int prefabID = bulletPrefab.GetInstanceID();
-    //    if(!bulletPools.ContainsKey(prefabID))
-    //    {
-    //        BulletPool newPool = new BulletPool(bulletPrefab, maxPoolSize);
-    //        bulletPools.Add(prefabID, newPool);
-    //    }
-    //    return bulletPools[prefabID];
-    //}
+
+    public void InitialisePool(GameObject bulletPrefab, int maxPoolSize)
+    {
+        if (_globalBulletPool == null)
+        {
+            _globalBulletPool = new BulletPool(bulletPrefab, maxPoolSize);
+        }
+    }
+
+    public BulletPool GetBulletPool()
+    {
+        return _globalBulletPool;
+    }
 
 
 }
