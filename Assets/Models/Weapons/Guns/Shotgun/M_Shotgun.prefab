@@ -24,13 +24,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5733360858891825411}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
+  m_LocalRotation: {x: -0.5, y: -0.5, z: 0.5, w: 0.5}
   m_LocalPosition: {x: -0.7911, y: 0.0162, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8371968641545288004}
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 90}
 --- !u!1 &6632978370720015061
 GameObject:
   m_ObjectHideFlags: 0
@@ -40,15 +40,15 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8371968641545288004}
-  - component: {fileID: 1411786206668590948}
-  - component: {fileID: 2046561707879588349}
-  - component: {fileID: 1715227112488219722}
-  - component: {fileID: 3962860028628532376}
-  - component: {fileID: 6226066551522904296}
-  - component: {fileID: 6775687928275581088}
+  - component: {fileID: 4533514747989234884}
+  - component: {fileID: 7631411556998370741}
+  - component: {fileID: 2416599842561625729}
+  - component: {fileID: 7252348310988646913}
+  - component: {fileID: 6189351345947812090}
+  - component: {fileID: 7314371785888141617}
   m_Layer: 0
   m_Name: M_Shotgun
-  m_TagString: Untagged
+  m_TagString: Gun
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -74,7 +74,7 @@ Transform:
   - {fileID: 8457983746977036362}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &1411786206668590948
+--- !u!65 &4533514747989234884
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -95,7 +95,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.9627514, y: 0.14879853, z: 0.04826355}
   m_Center: {x: -0.19344234, y: -0.019076854, z: -0.00071525574}
---- !u!82 &2046561707879588349
+--- !u!82 &7631411556998370741
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -192,7 +192,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!54 &1715227112488219722
+--- !u!54 &2416599842561625729
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -219,7 +219,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &3962860028628532376
+--- !u!114 &7252348310988646913
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -232,13 +232,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gun: {fileID: 11400000, guid: ea3e0d3f862ff8147bfebd9cc0cfdab0, type: 2}
-  firePoint: {fileID: 0}
+  firePoint: {fileID: 8457983746977036362}
   bulletPrefab: {fileID: 2808494219648252041, guid: d0242ac1ec3feb84c8d9e320036833f8, type: 3}
   _lineRenderer: {fileID: 0}
   _layerMask:
     serializedVersion: 2
     m_Bits: 0
---- !u!114 &6226066551522904296
+--- !u!114 &6189351345947812090
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -303,14 +303,50 @@ MonoBehaviour:
       m_Calls: []
   m_Activated:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7252348310988646913}
+        m_TargetAssemblyTypeName: GunController, Assembly-CSharp
+        m_MethodName: TriggerPressedDown
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 7252348310988646913}
+        m_TargetAssemblyTypeName: GunController, Assembly-CSharp
+        m_MethodName: Shoot
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_Deactivated:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7252348310988646913}
+        m_TargetAssemblyTypeName: GunController, Assembly-CSharp
+        m_MethodName: TriggerPressedDown
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_StartingHoverFilters: []
   m_StartingSelectFilters: []
   m_StartingInteractionStrengthFilters: []
-  m_AttachTransform: {fileID: 0}
+  m_AttachTransform: {fileID: 6023192965449194876}
   m_SecondaryAttachTransform: {fileID: 0}
   m_UseDynamicAttach: 0
   m_MatchAttachPosition: 1
@@ -360,7 +396,7 @@ MonoBehaviour:
   m_StartingMultipleGrabTransformers: []
   m_AddDefaultGrabTransformers: 1
   m_FarAttachMode: 0
---- !u!114 &6775687928275581088
+--- !u!114 &7314371785888141617
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -403,7 +439,7 @@ Transform:
   m_GameObject: {fileID: 7222230278249525707}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0.0738, y: -0.0189, z: 0}
+  m_LocalPosition: {x: -0.10840121, y: -0.0189, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

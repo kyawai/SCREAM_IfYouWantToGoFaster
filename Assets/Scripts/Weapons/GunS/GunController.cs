@@ -18,9 +18,9 @@ public class GunController : ApplyWeaponComponents, IShootable
 
     private Transform _thisGun;
 
-    private bool _hasLaser;
-    [SerializeField] private LineRenderer _lineRenderer;
-    [SerializeField] private LayerMask _layerMask;
+    //private bool _hasLaser;
+    //[SerializeField] private LineRenderer _lineRenderer;
+    //[SerializeField] private LayerMask _layerMask;
 
     private void Start()
     {
@@ -32,14 +32,14 @@ public class GunController : ApplyWeaponComponents, IShootable
         _audioSoure = GetComponent<AudioSource>();
         gun.ammo = 20; //DELETE AFTER 
 
-        if (_hasLaser)
-        { 
+        //if (_hasLaser)
+        //{ 
 
-            _originalRot = _thisGun.localRotation;
-            _lineRenderer.positionCount = 2;
-            _lineRenderer.startWidth = 0.01f;
-            _lineRenderer.endWidth = 0.01f;
-        }
+        //    _originalRot = _thisGun.localRotation;
+        //    _lineRenderer.positionCount = 2;
+        //    _lineRenderer.startWidth = 0.01f;
+        //    _lineRenderer.endWidth = 0.01f;
+        //}
 
     }
     public void Shoot()
@@ -51,14 +51,13 @@ public class GunController : ApplyWeaponComponents, IShootable
                 ShootOneBullet();
                 return;
             case GunSO.GunType.sniper:
-                EnableLaser(_hasLaser);
+                //EnableLaser(_hasLaser);
                 ShootOneBullet();
                 return;
             case GunSO.GunType.shotgun:
                 ShootOneBullet();
                 return;
             case GunSO.GunType.smg:
-                _hasLaser = true;
                 StartCoroutine(ShootContineousBullet());
                 return;
             case GunSO.GunType.assultrifle:
@@ -115,31 +114,31 @@ public class GunController : ApplyWeaponComponents, IShootable
         _thisGun.localRotation = _originalRot;
     }
 
-    public void EnableLaser(bool activateLaser)
-    {
-        _hasLaser = activateLaser;
-    }
+    //public void EnableLaser(bool activateLaser)
+    //{
+    //    _hasLaser = activateLaser;
+    //}
 
-    private void Update()
-    {
-        if (_hasLaser)
-        {
-            Ray ray = new Ray(firePoint.position, firePoint.forward);
-            RaycastHit hit;
-            Vector3 end;
-            if (Physics.Raycast(ray, out hit, 100f, _layerMask))
-            {
-                end = hit.point;
-            }
-            else
-            {
-                end = firePoint.position + firePoint.forward * 100f;
-            }
-            _lineRenderer.SetPosition(0, firePoint.position);
-            //_lineRenderer.SetPosition(1, (firePoint.transform.forward * 100f));
-            _lineRenderer.SetPosition(1, end);
-        }
-    }
+    //private void Update()
+    //{
+    //    if (_hasLaser)
+    //    {
+    //        Ray ray = new Ray(firePoint.position, firePoint.forward);
+    //        RaycastHit hit;
+    //        Vector3 end;
+    //        if (Physics.Raycast(ray, out hit, 100f, _layerMask))
+    //        {
+    //            end = hit.point;
+    //        }
+    //        else
+    //        {
+    //            end = firePoint.position + firePoint.forward * 100f;
+    //        }
+    //        _lineRenderer.SetPosition(0, firePoint.position);
+    //        //_lineRenderer.SetPosition(1, (firePoint.transform.forward * 100f));
+    //        _lineRenderer.SetPosition(1, end);
+    //    }
+    //}
     private void ApplyRecoil()
     {
 
