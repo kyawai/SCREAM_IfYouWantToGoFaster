@@ -1,11 +1,10 @@
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 [RequireComponent (typeof(Rigidbody), typeof(Collider))]
 public abstract class WeaponBase : MonoBehaviour
 {
-    //public WeaponStatsSO weaponStats;
     protected Rigidbody rb;
-
 
     protected virtual void Awake()
     {
