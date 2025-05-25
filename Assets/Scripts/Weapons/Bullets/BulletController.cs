@@ -37,13 +37,8 @@ public class BulletController : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Gun"))
-        { return; }
-        else
-        {
-            SpawnBulletHole(collision);
-            ReturnToPool();
-        }
+        SpawnBulletHole(collision);
+        ReturnToPool();
     }
 
     private void ReturnToPool()
