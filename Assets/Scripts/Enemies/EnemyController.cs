@@ -7,15 +7,24 @@ public class EnemyController : MonoBehaviour
     protected IEnemyState currentState;
     protected IEnemyMovement currentMovement;
    
-    protected void Start()
+    protected void Awake()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
 
-        IEnemyMovement currentMovement = GetComponent<IEnemyMovement>();
+        currentMovement = GetComponent<IEnemyMovement>();
         IEnemyState currentState = GetComponent<IEnemyState>();
 
-        SetState(new PatrolState());
 
+        SetState(new PatrolState());
+    }
+
+    public EnemySO GetEnemySO()
+    {
+        return enemySO;
+    }
+    public IEnemyMovement GetMovement()
+    {
+        return currentMovement;
     }
     protected void Update()
     {
@@ -26,16 +35,7 @@ public class EnemyController : MonoBehaviour
         currentState = state;
         currentState.EnterState(this);
     }
-    public void SetMovement(IEnemyMovement movement)
-    {
-        currentMovement = movement;
-        Debug.Log("SETTING MOVEMENT");
-    }
 
-    public IEnemyMovement GetMovement()
-    {
-        return currentMovement;
-    }
     public virtual void NoiseAlert(Vector3 noisePos)
     {
         Debug.Log("HEARD PLAYER");

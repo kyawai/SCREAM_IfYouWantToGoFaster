@@ -3,7 +3,7 @@ using UnityEngine.Splines;
 
 public interface IEnemyMovement
 {
-    void Move(Transform enemy);
+    public void Move();
 }
 
 

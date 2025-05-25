@@ -8,8 +8,15 @@ public interface IEnemyState
 
 public class PatrolState : IEnemyState
 {
-    public void EnterState(EnemyController enemy) { Debug.Log("START Patrolling"); }
-    public void UpdateState(EnemyController enemy) { enemy.GetMovement()?.Move(enemy.transform); }
+    public void EnterState(EnemyController enemy)
+    {
+        if (enemy.GetMovement() == null)
+        {
+            Debug.LogError($"Enemy {enemy.name} has no movement script assigned!");
+            return;
+        }
+    }
+    public void UpdateState(EnemyController enemy) { enemy.GetMovement().Move(); }
 }
 
 public class AlertState : IEnemyState

@@ -122,10 +122,8 @@ public class GunController : ApplyWeaponComponents, IShootable
 
     private void Update()
     {
-
         if (_hasLaser)
         {
-            Debug.Log("has laser");
             Ray ray = new Ray(laserPoint.position, laserPoint.forward);
             RaycastHit hit;
             Vector3 end;
