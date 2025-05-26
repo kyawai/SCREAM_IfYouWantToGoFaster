@@ -14,7 +14,7 @@ public class ApplyWeaponComponents : WeaponBase
         }
         if (GetComponent<Outline>() == null)
         {
-            if (gameObject.GetComponent<GunController>()._hasLaser == true) return;
+            if (gameObject.GetComponent<GunLaser>()._hasLaser == true) return;
             gameObject.AddComponent<Outline>();
             Outline outline = GetComponent<Outline>();
 

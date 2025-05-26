@@ -1,29 +1,33 @@
+using System;
 using System.Collections;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
+/// <summary>
+/// Abstract script for base gun controller
+/// </summary>
 [RequireComponent(typeof(AudioSource))]
-public class GunController : ApplyWeaponComponents, IShootable
+public abstract class GunController : MonoBehaviour, IShootable
 {
-    public GunSO gun;
-    public Transform firePoint;
-    public Transform laserPoint;
-    public GameObject bulletPrefab;
+    [Header("Gun")]
+    protected Transform _thisGun;
+    [SerializeField] protected GunSO gun;
+    [SerializeField] protected Transform firePoint;
+
+    [Header("Audio")]
     private AudioSource _audioSoure;
 
+    [Header("Bullets")]
     private IBulletFactory _bulletFactory;
+    [SerializeField] private GameObject bulletPrefab;
 
-    private Quaternion _originalRot;
+    [Header("Recoil")]
+    protected Quaternion _originalRot;
     private bool _isTriggerDown;
 
-    private Transform _thisGun;
-
-    public bool _hasLaser;
-    [SerializeField] private LineRenderer _lineRenderer;
-    [SerializeField] private LayerMask _layerMask;
-
-    private void Start()
+    protected virtual void Start()
     {
         _thisGun = this.gameObject.transform;
 
@@ -31,54 +35,47 @@ public class GunController : ApplyWeaponComponents, IShootable
         _bulletFactory = BulletPoolManager.Instance.GetBulletPool();
 
         _audioSoure = GetComponent<AudioSource>();
-        gun.ammo = 20; //DELETE AFTER 
 
-        if (_hasLaser)
-        {
-
-            _originalRot = _thisGun.localRotation;
-            _lineRenderer.positionCount = 2;
-            _lineRenderer.startWidth = 0.01f;
-            _lineRenderer.endWidth = 0.01f;
-        }
-
+        Initialise();
     }
-    public void Shoot()
+
+    protected virtual void Initialise()
     {
-        if (gun.ammo <= 0)
-        {
-            return;
-        }
-        switch (gun.gunType)
-        {
-            case GunSO.GunType.pistol:
-                ShootOneBullet();
-                return;
-            case GunSO.GunType.sniper:
-                ShootOneBullet();
-                return;
-            case GunSO.GunType.shotgun:
-                ShootOneBullet();
-                return;
-            case GunSO.GunType.smg:
-                StartCoroutine(ShootContineousBullet());
-                return;
-            case GunSO.GunType.assultrifle:
-                StartCoroutine(ShootContineousBullet());
-                return;
-        }
+        ResetAmmo();
     }
-
-    public void TriggerPressedDown(bool triggerDown)
+    public virtual void Shoot()
     {
-        _isTriggerDown = triggerDown;
+        _originalRot = _thisGun.localRotation;
+        if (HasAmmo()){
+            switch (gun.gunType)
+            {
+                case GunSO.GunType.pistol:
+                case GunSO.GunType.sniper:
+                case GunSO.GunType.shotgun:
+                    ShootOneBullet();
+                    break;
+                case GunSO.GunType.smg:
+                case GunSO.GunType.assultrifle:
+                    StartAutomaticFire();
+                    break;
+            }
+        }
     }
 
-    private void ShootOneBullet()
+    protected virtual void UseAmmo()
+    {
+        gun.ammo--;
+    }
+    protected abstract void StartAutomaticFire();
+    protected abstract void StopAutomaticFire();
+    protected abstract void OnAmmoEmpty();
+
+    protected void ShootOneBullet()
     {
         _audioSoure.PlayOneShot(gun.shootingSound);
         GameObject bullet = _bulletFactory.GetBullet(firePoint.position, firePoint.rotation);
-        gun.ammo--;
+        UseAmmo();
+
         if (bullet.TryGetComponent(out Rigidbody rb))
         {
             rb.linearVelocity = Vector3.zero;
@@ -87,58 +84,36 @@ public class GunController : ApplyWeaponComponents, IShootable
     }
 
 
-    private IEnumerator ShootContineousBullet()
+    protected virtual void ApplyRecoil()
     {
-        float elapsed = 0f;
-        float recoilAmountLow = 0f;
-        float recoilAmountHigh = 0f;
-        while (_isTriggerDown && gun.ammo > 0)
+        Vector3 recoilRotation = new Vector3(
+            -gun.recoilAmount,
+            UnityEngine.Random.Range(-gun.recoilAmount * 0.5f, gun.recoilAmount * 0.5f),
+            UnityEngine.Random.Range(-gun.recoilAmount * 0.5f, gun.recoilAmount * 0.5f)
+        );
+        _thisGun.localRotation = _originalRot * Quaternion.Euler(recoilRotation);
+        StartCoroutine(ResetRecoil());
+    }
+
+    protected IEnumerator ResetRecoil()
+    {
+        float resetSpeed = 5f;
+
+        while (Quaternion.Angle(_thisGun.localRotation, _originalRot) > 0.1f)
         {
-            _audioSoure.PlayOneShot(gun.shootingSound);
-            GameObject bullet = _bulletFactory.GetBullet(firePoint.position, firePoint.rotation);
-            gun.ammo--;
-            if (bullet.TryGetComponent(out Rigidbody rb))
-            {
-                rb.linearVelocity = Vector3.zero;
-                rb.AddForce(firePoint.forward * gun.bulletForce, ForceMode.Impulse);
-            }
-            float lerpFactor = elapsed / (gun.ammo * 0.1f);
-
-            recoilAmountLow = recoilAmountLow - gun.recoilAmount;
-            recoilAmountHigh = recoilAmountHigh + gun.recoilAmount;
-            Vector3 randomRotation = new Vector3(0f, Random.Range(recoilAmountLow, recoilAmountHigh), Random.Range(recoilAmountLow,recoilAmountHigh));
-            _thisGun.localRotation = Quaternion.Slerp(_originalRot, _originalRot * Quaternion.Euler(randomRotation),lerpFactor);
-            elapsed += Time.deltaTime;
-            yield return new WaitForSeconds(0.1f);
-
+            _thisGun.localRotation = Quaternion.Slerp(_thisGun.localRotation, _originalRot, Time.deltaTime * resetSpeed);
+            yield return null;
         }
+
         _thisGun.localRotation = _originalRot;
     }
 
-    public void EnableLaser(bool activateLaser)
+    protected virtual bool CanShoot()
     {
-        _hasLaser = activateLaser;
+        return gun.ammo > 0;
     }
-
-    private void Update()
-    {
-        if (_hasLaser)
-        {
-            Ray ray = new Ray(laserPoint.position, laserPoint.forward);
-            RaycastHit hit;
-            Vector3 end;
-            if (Physics.Raycast(ray, out hit, 100f, _layerMask))
-            {
-                end = hit.point;
-            }
-            else
-            {
-                end = laserPoint.position + laserPoint.forward * 100f;
-            }
-            _lineRenderer.SetPosition(0, laserPoint.position);
-
-            _lineRenderer.SetPosition(1, end);
-        }
-    }
+    public int GetAmmo() => gun.ammo;
+    public bool HasAmmo() => gun.ammo > 0;
+    public void ResetAmmo() => gun.ammo = gun.maxAmmo;
 
 }

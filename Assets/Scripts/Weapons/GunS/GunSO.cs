@@ -4,6 +4,7 @@ using UnityEngine;
 public class GunSO : ScriptableObject
 {
     public int ammo;
+    public int maxAmmo;
     public float recoilAmount;
     public float bulletForce;
     public AudioClip shootingSound;

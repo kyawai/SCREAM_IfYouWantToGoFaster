@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fabcabfff611ead43a7dd2712cc3249f, type: 3}
   m_Name: Gun_Pisol
   m_EditorClassIdentifier: 
-  ammo: 5
+  ammo: 10
+  maxAmmo: 10
   recoilAmount: 0
   bulletForce: 1
   shootingSound: {fileID: 8300000, guid: 7f722ce62a72a71448e72f745a7c6754, type: 3}
