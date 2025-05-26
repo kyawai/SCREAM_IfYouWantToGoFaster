@@ -14,16 +14,19 @@ public static class GameEvents
     [System.Serializable]
     public struct BulletHitData
     {
-        public GameObject hitObject;
+        public string hitTag;
 
-        public BulletHitData(GameObject hit)
+        public BulletHitData(String hit)
         {
-            hitObject = hit;
+            hitTag = hit;
         }
-
-        public GameObject GetHitData()
+        public override string ToString()
         {
-            return hitObject;
+            return hitTag.ToString();
+        }
+        public string GetHitData()
+        {
+            return hitTag;
         }
     }
 }

@@ -26,9 +26,11 @@ public class EnemyController : MonoBehaviour
         GameEvents.OnBulletHit += Die;
     }
 
+
     private void OnDestroy()
     {
-        if(_alertController != null)
+        GameEvents.OnBulletHit -= Die;
+        if (_alertController != null)
         {
             _alertController.OnPlayerDetected.RemoveListener(PlayerDetected);
             _alertController.OnPlayerLost.RemoveListener(PlayerLost);
@@ -78,8 +80,11 @@ public class EnemyController : MonoBehaviour
     {
         Debug.Log(enemySO.enemyType + "IS ATTACKING");
     }
-    public void Die(GameEvents.BulletHitData datat)
+    public void Die(GameEvents.BulletHitData hitData)
     {
-        Destroy(gameObject);
+        if (hitData.ToString() == "Enemy")
+        {
+            Destroy(gameObject);
+        }
     }
 }

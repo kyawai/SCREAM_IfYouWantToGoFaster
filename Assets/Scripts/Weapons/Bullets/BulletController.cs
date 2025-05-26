@@ -39,12 +39,11 @@ public class BulletController : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         SpawnBulletHole(collision);
-
-        if (collision.gameObject.tag == "Enemy")
+        if (collision.gameObject.CompareTag("Enemy") || collision.gameObject.CompareTag("Player"))
         {
-            GameEvents.BulletHitData hitData = new GameEvents.BulletHitData(collision.gameObject);
-            GameEvents.TriggerBulletHit(hitData);
+            GameEvents.BulletHitData hitData = new(collision.gameObject.tag.ToString());
         }
+
         ReturnToPool();
     }
 
