@@ -25,7 +25,7 @@ public abstract class GunController : MonoBehaviour, IShootable
 
     [Header("Recoil")]
     protected Quaternion _originalRot;
-    private bool _isTriggerDown;
+
 
     protected virtual void Start()
     {

@@ -55,6 +55,11 @@ public class BulletController : MonoBehaviour
         Quaternion bulletHoleRot = Quaternion.LookRotation(-contactPoint.normal, Vector3.up); 
 
         GameObject bulletHole = _bulletHolePool.GetBulletHole(contactPoint.point, bulletHoleRot, collision.gameObject.transform);
+
+        if(collision.gameObject.tag == "Player")
+        {
+            Debug.Log("HIT PLAYER");
+        }
         
     }
 }

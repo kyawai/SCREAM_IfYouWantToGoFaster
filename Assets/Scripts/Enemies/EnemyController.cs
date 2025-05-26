@@ -32,7 +32,7 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    private void PlayerDetected()
+    private void PlayerDetected(Transform player)
     {
         SetState(new AlertState());
     }

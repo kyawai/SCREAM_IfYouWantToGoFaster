@@ -10,7 +10,7 @@ public class EnemyAlertController : MonoBehaviour
     public GameObject explenationPoint;
 
 
-    public UnityEvent OnPlayerDetected;
+    public UnityEvent<Transform> OnPlayerDetected;
     public UnityEvent OnPlayerLost;
 
     private Transform _player;
@@ -44,8 +44,9 @@ public class EnemyAlertController : MonoBehaviour
                 {
                     if (hit.collider.tag == "Player")
                     {
+                       Transform playerHead = hit.transform;
                        playerDetected = true;
-                       OnPlayerDetected?.Invoke();
+                       OnPlayerDetected?.Invoke(playerHead);
                        return;
                     }
                 }

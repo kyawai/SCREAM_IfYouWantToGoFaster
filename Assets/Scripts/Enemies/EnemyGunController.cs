@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.LowLevel;
 
 public class EnemyGunController : GunController
 {
@@ -9,26 +10,35 @@ public class EnemyGunController : GunController
 
     private Coroutine _automaticFireCoroutine;
     private bool _isAiming;
-    private Transform _target;
+    private Transform _playerHead;
+
+    [SerializeField]private EnemyAlertController _alertController;
 
     protected override void Initialise()
     {
-        
-    }
+        _alertController.OnPlayerDetected.AddListener(StartAiming);
+        _alertController.OnPlayerLost.AddListener(StopAiming);
 
+    }
+    private void OnDestroy()
+    {
+        if (_alertController != null)
+        {
+            _alertController.OnPlayerDetected.RemoveListener(StartAiming);
+            _alertController.OnPlayerLost.RemoveListener(StopAiming);
+        }
+    }
     protected override bool CanShoot() { return true; }
     protected override void UseAmmo()
     {
 
     }
-    public void SetTarget(Transform target)
-    {
-        _target = target;
-    }
 
-    public void StartAiming()
+    public void StartAiming(Transform playerHead)
     {
         _isAiming = true;
+        _playerHead = playerHead;
+        StartAutomaticFire();
     }
 
     public void StopAiming()
@@ -63,18 +73,16 @@ public class EnemyGunController : GunController
     private IEnumerator AIShoot()
     {
         float burstStartTime = Time.time;
-
+        
         while (_isAiming)
         {
             // Aim at target with some inaccuracy
-            if (_target != null)
+            if (_playerHead != null)
             {
                 AimAtTarget();
             }
-
-            Debug.Log("SHOOT PLAYER");
             ShootOneBullet();
-            yield return new WaitForSeconds(0.15f); // Slightly slower than player
+            yield return new WaitForSeconds(1f); // Slightly slower than player
         }
 
         // Cooldown between bursts
@@ -95,9 +103,9 @@ public class EnemyGunController : GunController
 
     private void AimAtTarget()
     {
-        if (_target == null) return;
+        if (_playerHead == null) return;
 
-        Vector3 directionToTarget = (_target.position - firePoint.position).normalized;
+        Vector3 directionToTarget = (_playerHead.position - firePoint.position).normalized;
 
         // Add some inaccuracy based on AI accuracy setting
         Vector3 inaccuracy = new Vector3(
@@ -106,7 +114,7 @@ public class EnemyGunController : GunController
             Random.Range(-1f, 1f) * (1f - _aimAccuracy)
         );
 
-        directionToTarget += inaccuracy * 0.1f;
+        //directionToTarget += inaccuracy * 0.1f;
         firePoint.rotation = Quaternion.LookRotation(directionToTarget);
     }
 }
