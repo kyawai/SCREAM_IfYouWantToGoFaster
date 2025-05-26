@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 /// <summary>
 /// Controls the bullet time through the air/if it collides and returns it to the pool
@@ -38,6 +39,12 @@ public class BulletController : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         SpawnBulletHole(collision);
+
+        if (collision.gameObject.tag == "Enemy")
+        {
+            GameEvents.BulletHitData hitData = new GameEvents.BulletHitData(collision.gameObject);
+            GameEvents.TriggerBulletHit(hitData);
+        }
         ReturnToPool();
     }
 
@@ -55,11 +62,6 @@ public class BulletController : MonoBehaviour
         Quaternion bulletHoleRot = Quaternion.LookRotation(-contactPoint.normal, Vector3.up); 
 
         GameObject bulletHole = _bulletHolePool.GetBulletHole(contactPoint.point, bulletHoleRot, collision.gameObject.transform);
-
-        if(collision.gameObject.tag == "Player")
-        {
-            Debug.Log("HIT PLAYER");
-        }
         
     }
 }

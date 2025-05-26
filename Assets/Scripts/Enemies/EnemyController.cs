@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class EnemyController : MonoBehaviour 
@@ -21,6 +22,8 @@ public class EnemyController : MonoBehaviour
         _alertController.OnPlayerLost.AddListener(PlayerLost);
 
         SetState(new PatrolState());
+
+        GameEvents.OnBulletHit += Die;
     }
 
     private void OnDestroy()
@@ -69,16 +72,14 @@ public class EnemyController : MonoBehaviour
 
     public virtual void NoiseAlert(Vector3 noisePos)
     {
-        Debug.Log("HEARD PLAYER");
         SetState(new AlertState());
     }
     protected virtual void Attack()
     {
         Debug.Log(enemySO.enemyType + "IS ATTACKING");
     }
-    public void Die()
+    public void Die(GameEvents.BulletHitData datat)
     {
-        Debug.Log("DEAD");
         Destroy(gameObject);
     }
 }
