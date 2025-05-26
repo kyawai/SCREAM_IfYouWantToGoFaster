@@ -1,6 +1,7 @@
 using UnityEngine;
+using UnityEngine.Events;
 
-public class EnemyAlertController : MonoBehaviour
+public class EnemyAlertController : MonoBehaviour 
 {
     [SerializeField] private float _viewRadius = 100f;
     [SerializeField] private float _viewAngle = 60f;
@@ -8,12 +9,23 @@ public class EnemyAlertController : MonoBehaviour
     [SerializeField] private LayerMask _obstacleMask;
     public GameObject explenationPoint;
 
+
+    public UnityEvent OnPlayerDetected;
+    public UnityEvent OnPlayerLost;
+
+    private Transform _player;
+
+    private void Start()
+    {
+        _player = GameObject.FindWithTag("Player").transform;
+    }
     private void Update()
     {
         DetectTargets();
     }
     private void DetectTargets()
     {
+        bool playerDetected = false;
         Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, _viewRadius, _layerMask);
 
         foreach (Collider target in targetsInViewRadius)
@@ -32,14 +44,34 @@ public class EnemyAlertController : MonoBehaviour
                 {
                     if (hit.collider.tag == "Player")
                     {
-                        explenationPoint.SetActive(true);
-                        return;
+                       playerDetected = true;
+                       OnPlayerDetected?.Invoke();
+                       return;
                     }
                 }
             }
         }
+        if (!playerDetected)
+        {
+            OnPlayerLost?.Invoke();
+        }
+
+    }
+
+    public void EnemyDetected()
+    {
+        if (!explenationPoint.activeSelf)
+        {
+            explenationPoint.SetActive(true);
+            gameObject.transform.LookAt(_player);
+        }
+    }
+
+    public void EnemyDetectionLost()
+    {
+        if (explenationPoint.activeSelf)
+        {
             explenationPoint.SetActive(false);
-
-
+        }
     }
 }

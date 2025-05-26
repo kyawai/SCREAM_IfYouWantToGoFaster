@@ -107,7 +107,7 @@ public class GunController : ApplyWeaponComponents, IShootable
             recoilAmountLow = recoilAmountLow - gun.recoilAmount;
             recoilAmountHigh = recoilAmountHigh + gun.recoilAmount;
             Vector3 randomRotation = new Vector3(0f, Random.Range(recoilAmountLow, recoilAmountHigh), Random.Range(recoilAmountLow,recoilAmountHigh));
-            // _thisGun.localRotation = Quaternion.Slerp(_originalRot, _originalRot * Quaternion.Euler(randomRotation),lerpFactor);
+            _thisGun.localRotation = Quaternion.Slerp(_originalRot, _originalRot * Quaternion.Euler(randomRotation),lerpFactor);
             elapsed += Time.deltaTime;
             yield return new WaitForSeconds(0.1f);
 
@@ -136,13 +136,9 @@ public class GunController : ApplyWeaponComponents, IShootable
                 end = laserPoint.position + laserPoint.forward * 100f;
             }
             _lineRenderer.SetPosition(0, laserPoint.position);
-            //_lineRenderer.SetPosition(1, (firePoint.transform.forward * 100f));
+
             _lineRenderer.SetPosition(1, end);
         }
-    }
-    private void ApplyRecoil()
-    {
-
     }
 
 }

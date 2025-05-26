@@ -6,6 +6,7 @@ public class EnemyController : MonoBehaviour
     protected Transform player;
     protected IEnemyState currentState;
     protected IEnemyMovement currentMovement;
+    private EnemyAlertController _alertController;
    
     protected void Awake()
     {
@@ -14,8 +15,36 @@ public class EnemyController : MonoBehaviour
         currentMovement = GetComponent<IEnemyMovement>();
         IEnemyState currentState = GetComponent<IEnemyState>();
 
+        _alertController = GetComponent<EnemyAlertController>();
+
+        _alertController.OnPlayerDetected.AddListener(PlayerDetected);
+        _alertController.OnPlayerLost.AddListener(PlayerLost);
 
         SetState(new PatrolState());
+    }
+
+    private void OnDestroy()
+    {
+        if(_alertController != null)
+        {
+            _alertController.OnPlayerDetected.RemoveListener(PlayerDetected);
+            _alertController.OnPlayerLost.RemoveListener(PlayerLost);
+        }
+    }
+
+    private void PlayerDetected()
+    {
+        SetState(new AlertState());
+    }
+
+    private void PlayerLost()
+    {
+        SetState(new PatrolState());
+    }
+    
+    public EnemyAlertController GetEnemyAlertController()
+    {
+        return _alertController;
     }
 
     public EnemySO GetEnemySO()
@@ -26,12 +55,14 @@ public class EnemyController : MonoBehaviour
     {
         return currentMovement;
     }
+
     protected void Update()
     {
         currentState?.UpdateState(this);
     }
     public void SetState(IEnemyState state)
     {
+        currentState?.ExitState(this);
         currentState = state;
         currentState.EnterState(this);
     }
